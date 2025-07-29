@@ -1,0 +1,108 @@
+<div class="container">
+  <!-- Left Section - Hidden on mobile -->
+  <div class="left-section">
+    <div class="puzzle-overlay"></div>
+    <div class="collaboration-content">
+      <h1 class="collaboration-title">A NEW WAY TO<br>COLLABORATE</h1>
+      <div class="people-illustration">
+        <div class="person">👤</div>
+        <div class="person">👤</div>
+        <div class="person">👤</div>
+        <div class="person">👤</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Section - Registration Form -->
+  <div class="right-section">
+    <div class="form-container">
+      <h2 class="form-title">Get Started!</h2>
+      
+      <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" novalidate>
+        <!-- Username Field -->
+        <div class="form-group">
+          <label class="form-label" for="username">Username</label>
+          <input 
+            type="text" 
+            id="username"
+            formControlName="username"
+            class="form-input"
+            [class.error]="hasError('username')"
+            placeholder="Enter username"
+            autocomplete="username">
+          <span 
+            class="error-message" 
+            *ngIf="hasError('username')">
+            {{ getErrorMessage('username') }}
+          </span>
+        </div>
+
+        <!-- Email Field -->
+        <div class="form-group">
+          <label class="form-label" for="email">Email</label>
+          <input 
+            type="email" 
+            id="email"
+            formControlName="email"
+            class="form-input"
+            [class.error]="hasError('email')"
+            placeholder="Enter email"
+            autocomplete="email">
+          <span 
+            class="error-message" 
+            *ngIf="hasError('email')">
+            {{ getErrorMessage('email') }}
+          </span>
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <input 
+            type="password" 
+            id="password"
+            formControlName="password"
+            class="form-input"
+            [class.error]="hasError('password')"
+            placeholder="Enter password"
+            autocomplete="new-password">
+          <span 
+            class="error-message" 
+            *ngIf="hasError('password')">
+            {{ getErrorMessage('password') }}
+          </span>
+        </div>
+
+        <!-- Terms and Conditions -->
+        <div class="checkbox-container">
+          <input 
+            type="checkbox" 
+            id="acceptTerms" 
+            formControlName="acceptTerms"
+            class="checkbox">
+          <label for="acceptTerms" class="checkbox-label">
+            I accept the <a href="#" target="_blank">Terms of service</a> and <a href="#" target="_blank">privacy policy</a>
+          </label>
+        </div>
+        <span 
+          class="error-message" 
+          *ngIf="hasError('acceptTerms')">
+          {{ getErrorMessage('acceptTerms') }}
+        </span>
+
+        <!-- Submit Button -->
+        <button 
+          type="submit" 
+          class="submit-btn"
+          [disabled]="registrationForm.invalid && submitted">
+          Sign Up
+        </button>
+      </form>
+
+      <!-- Sign In Link -->
+      <div class="signin-link">
+        Already registered? <a href="#" routerLink="/login">Sign In</a>
+      </div>
+    </div>
+  </div>
+</div>
