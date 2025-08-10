@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { TradeLogComponent } from './components/trade-log/trade-log.component';
-import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -13,7 +12,7 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'trade-log',
+    path: 'log',
     component: TradeLogComponent,
     title: 'Trade Log',
   },
@@ -26,11 +25,6 @@ export const routes: Routes = [
     path: 'signup',
     component: SignupComponent,
     title: 'SignUp',
-  },
-  {
-    path: 'homepage',
-    component: LandingPageComponent,
-    title: 'Landing Page',
   },
   {
     path: 'info',
