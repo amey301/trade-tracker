@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+<div class="dashboard-container">
+  <!-- Header -->
+  <!-- <header class="dashboard-header">
+    <h1 class="dashboard-title">Trading Dashboard</h1>
+    <p class="dashboard-subtitle">Manage your strategies and track market indices</p>
+  </header> -->
+
+  <div class="dashboard-grid">
+    
+    <!-- Strategies Section -->
+    <section class="strategies-section">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="title-icon">📊</span>
+          Trading Strategies
+        </h2>
+        <button 
+          class="add-btn"
+          (click)="toggleAddStrategyForm()"
+          [class.active]="showAddStrategyForm">
+          <span class="add-icon">+</span>
+          Add Strategy
+        </button>
+      </div>
+
+      <!-- Add Strategy Form -->
+      <div class="add-form" [class.show]="showAddStrategyForm">
+        <div class="form-card">
+          <h3 class="form-title">Create New Strategy</h3>
+          
+          <div class="input-group">
+            <label class="input-label">Strategy Name</label>
+            <input 
+              type="text" 
+              class="form-input"
+              [(ngModel)]="newStrategy.name"
+              placeholder="Enter strategy name..."
+              maxlength="50">
+          </div>
+
+          <div class="input-group">
+            <label class="input-label">Description</label>
+            <textarea 
+              class="form-textarea"
+              [(ngModel)]="newStrategy.description"
+              placeholder="Describe your trading strategy..."
+              rows="3"
+              maxlength="200"></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button 
+              class="cancel-btn"
+              (click)="toggleAddStrategyForm()">
+              Cancel
+            </button>
+            <button 
+              class="create-btn"
+              (click)="addStrategy()"
+              [disabled]="!newStrategy.name.trim() || !newStrategy.description.trim()">
+              Create Strategy
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Strategies List -->
+      <div class="strategies-grid">
+        <div 
+          *ngFor="let strategy of strategies"
+          class="strategy-card"
+          >
+          <div class="strategy-header">
+            <h3 class="strategy-name">{{ strategy.name }}</h3>
+            <div class="strategy-actions">
+              <button 
+                class="toggle-btn"
+                (click)="toggleStrategyStatus(strategy.id)">
+               
+              </button>
+              <button 
+                class="delete-btn"
+                (click)="deleteStrategy(strategy.id)"
+                title="Delete Strategy">
+                <span class="delete-icon">🗑️</span>
+              </button>
+            </div>
+          </div>
+
+          <p class="strategy-description">{{ strategy.description }}</p>
+          
+          <div class="strategy-footer">
+            <span class="strategy-date">
+              Created: {{ strategy.createdAt | date:'MMM dd, yyyy' }}
+            </span>
+            
+          </div>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="strategies.length === 0" class="empty-state">
+          <div class="empty-icon">📈</div>
+          <h3 class="empty-title">No Strategies Yet</h3>
+          <p class="empty-description">Create your first trading strategy to get started</p>
+          <button class="empty-btn" (click)="toggleAddStrategyForm()">
+            Add Your First Strategy
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Indices Section -->
+    <section class="indices-section">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="title-icon">📊</span>
+          Market Indices
+        </h2>
+        <div class="indices-actions">
+          <button class="action-btn secondary" (click)="clearAllIndices()">
+            Clear All
+          </button>
+          <button class="action-btn primary" (click)="selectAllPopular()">
+            Select Popular
+          </button>
+        </div>
+      </div>
+
+      <!-- Popular Indices Chips -->
+      <!-- <div class="popular-section">
+        <h3 class="popular-title">Popular Indices</h3>
+        <div class="chips-container">
+          <<button 
+  *ngFor="let indexName of popularIndices"
+  class="chip"
+  [class.selected]="isIndexSelected(indexName)"
+  (click)="addPopularIndex(indexName)">
+  {{ indexName }}
+  <span class="chip-icon">+</span>
+</button>
+        </div>
+      </div> -->
+
+      <!-- Selected Indices -->
+      <div class="selected-section" *ngIf="getSelectedIndices().length > 0">
+        <h3 class="selected-title">
+          Selected Indices 
+          <span class="count-badge">{{ getSelectedIndices().length }}</span>
+        </h3>
+        <div class="selected-chips">
+          <div 
+            *ngFor="let index of getSelectedIndices()"
+            class="selected-chip">
+            <span class="chip-name">{{ index.name }}</span>
+            <span class="chip-symbol">{{ index.symbol }}</span>
+            <button 
+              class="remove-btn"
+              (click)="toggleIndex(index.id)"
+              title="Remove index">
+              ×
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- All Indices Grid -->
+      <div class="indices-grid">
+        <div 
+          *ngFor="let index of availableIndices"
+          class="index-card"
+          [class.selected]="index.isSelected"
+          (click)="toggleIndex(index.id)">
+          
+          <div class="index-content">
+            <h3 class="index-name">{{ index.name }}</h3>
+            <span class="index-symbol">{{ index.symbol }}</span>
+          </div>
+          
+          <div class="index-checkbox">
+            <div class="checkbox" [class.checked]="index.isSelected">
+              <span class="checkmark" *ngIf="index.isSelected">✓</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="particles">
+  <div 
+    *ngFor="let particle of particles" 
+    class="particle"
+    [style.left.%]="particle.left"
+    [style.width.px]="particle.size"
+    [style.height.px]="particle.size"
+    [style.animation-delay.s]="particle.animationDelay"
+    [style.animation-duration.s]="particle.animationDuration">
+  </div>
+</div>
+
+<!-- Navigation -->
+<nav class="navbar" #navbar [class.scrolled]="isScrolled">
+  <div class="navbar-container">
+    <!-- Logo -->
+    <a href="#" class="logo" (click)="onNavLinkClick('home')">
+      TradeTracker📈
+    </a>
+
+    <!-- Desktop Navigation -->
+    <ul class="nav-links">
+      <li><a href="#" (click)="onNavLinkClick('home')">Home</a></li>
+      <li><a href="#" (click)="onNavLinkClick('information')">Information</a></li>
+      <li><a href="#" (click)="onNavLinkClick('logs')">Logs</a></li>
+      <li><a href="#" (click)="onNavLinkClick('summaries')">Summaries</a></li>
+    </ul>
+
+    <!-- Sign Out Button -->
+    <button 
+      class="sign-out-btn" 
+      (click)="onSignOut($event)">
+      Sign Out
+    </button>
+
+    <!-- Mobile Menu Button -->
+    <button 
+      class="mobile-menu-btn" 
+      #mobileMenuBtn
+      [class.active]="isMobileMenuOpen"
+      (click)="toggleMobileMenu()">
+      <div class="hamburger"></div>
+      <div class="hamburger"></div>
+      <div class="hamburger"></div>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div 
+  class="mobile-menu" 
+  #mobileMenu
+  [class.active]="isMobileMenuOpen">
+  <ul class="mobile-nav-links">
+    <li><a href="#" (click)="onNavLinkClick('home'); closeMobileMenu()">Home</a></li>
+    <li><a href="#" (click)="onNavLinkClick('information'); closeMobileMenu()">Information</a></li>
+    <li><a href="#" (click)="onNavLinkClick('logs'); closeMobileMenu()">Logs</a></li>
+    <li><a href="#" (click)="onNavLinkClick('summaries'); closeMobileMenu()">Summaries</a></li>
+  </ul>
+  <div class="mobile-sign-out">
+    <button 
+      class="sign-out-btn" 
+      (click)="onSignOut($event)">
+      Sign Out
+    </button>
+  </div>
+</div>
+
+<!-- Demo Content -->
+<!-- <div class="content">
+  <h1 class="hero-title">Welcome to TradeTracker</h1>
+  <p class="hero-subtitle">Premium trading analytics with beautiful design</p>
+</div> -->
+
+</body>
+</html>

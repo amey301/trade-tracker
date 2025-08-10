@@ -3,6 +3,8 @@ import { TradeLogComponent } from './components/trade-log/trade-log.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { InformationComponent } from './components/information/information.component';
 
 export const routes: Routes = [
   {
@@ -29,6 +31,16 @@ export const routes: Routes = [
     path: 'homepage',
     component: LandingPageComponent,
     title: 'Landing Page',
+  },
+  {
+    path: 'info',
+    component: InformationComponent,
+    title: 'Landing Page',
+  },
+  {
+    path: 'navbar',
+    component: NavbarComponent,
+    title: 'Trade Log',
   },
   {
     path: '**',
