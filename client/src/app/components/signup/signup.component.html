@@ -6,143 +6,105 @@
   <title>Document</title>
 </head>
 <body>
-  <div class="container">
-  <div class="logo-section">
-    <div class="logo">TradeTracker</div>
-    <div class="logo-subtitle">Smart Trading Platform</div>
-  </div>
+  
 
   <!-- <div class="form-header">
     <h1 class="form-title">Create Account</h1>
     <p class="form-subtitle">Join us and get started today</p>
   </div> -->
   
-  <form 
-    class="form-container" 
-    [formGroup]="registrationForm" 
-    (ngSubmit)="onSubmit()"
-    [class.loading]="isLoading"
-    [class.step-2]="currentStep >= 2"
-    [class.step-3]="currentStep >= 3">
-    
-    <div class="progress-indicator" [style.width]="progressWidth"></div>
-    
+ <div class="container">
+  <div class="logo-section">
+    <div class="logo">TradeTracker</div>
+    <div class="logo-subtitle">Smart Trading Platform</div>
+  </div>
+
+  <form class="form-container">
+
+    <div class="progress-indicator"></div>
+
+    <!-- Username -->
     <div class="form-group">
       <label for="username">Username</label>
-      <div class="input-wrapper" [class.focused]="usernameControl?.value">
-        <input 
-          type="text" 
-          id="username" 
-          formControlName="username"
-          [class.input-error]="hasFieldError('username')"
-          placeholder="Enter your username" 
-          required>
+      <div class="input-wrapper">
+        <input
+          type="text"
+          id="username"
+          placeholder="Enter your username"
+          required />
         <div class="input-glow"></div>
-      </div>
-      <div class="error-message" [class.show]="hasFieldError('username')">
-        {{ getFieldError('username') }}
       </div>
     </div>
 
+    <!-- Phone -->
     <div class="form-group">
       <label for="phone">Phone Number</label>
-      <div class="input-wrapper" [class.focused]="phoneControl?.value">
-        <input 
-          type="tel" 
-          id="phone" 
-          formControlName="phone"
-          [class.input-error]="hasFieldError('phone')"
-          (input)="onPhoneInput($event)"
-          placeholder="+1 (555) 123-4567" 
-          required>
+      <div class="input-wrapper">
+        <input
+          type="tel"
+          id="phone"
+          placeholder="+1 (555) 123-4567"
+          required />
         <div class="input-glow"></div>
       </div>
-      <div class="error-message" [class.show]="hasFieldError('phone')">
-        {{ getFieldError('phone') }}
-      </div>
-      <button 
-        type="button" 
-        class="send-otp-btn" 
-        [disabled]="isOtpLoading"
-        [style.opacity]="isOtpLoading ? '0.5' : '1'"
-        (click)="sendOtp()">
-        {{ sendOtpButtonText }}
+      <button type="button" class="send-otp-btn">
+        Send OTP
       </button>
     </div>
 
+    <!-- OTP -->
     <div class="form-group otp-section" [class.show]="showOtpSection">
       <label for="otp">Enter OTP</label>
       <div class="otp-inputs">
-        <input 
+        <input
           *ngFor="let value of otpValues; let i = index"
-          #otpInput
-          type="text" 
-          class="otp-input" 
-          maxlength="1" 
+          type="text"
+          class="otp-input"
+          maxlength="1"
           pattern="\d"
-          [value]="otpValues[i]"
-          (input)="onOtpInput($event, i)"
-          (keydown)="onOtpKeydown($event, i)"
-          (keypress)="onOtpKeypress($event)">
+          [value]="otpValues[i]" />
       </div>
     </div>
 
+    <!-- Password -->
     <div class="form-group">
       <label for="password">Password</label>
-      <div class="input-wrapper" [class.focused]="passwordControl?.value">
-        <input 
-          [type]="showPassword ? 'text' : 'password'" 
-          id="password" 
-          formControlName="password"
-          [class.input-error]="hasFieldError('password')"
-          placeholder="Create a secure password" 
-          required>
-        <button 
-          type="button" 
-          class="password-toggle" 
+      <div class="input-wrapper">
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          id="password"
+          placeholder="Create a secure password"
+          required />
+        <button
+          type="button"
+          class="password-toggle"
           [class.visible]="showPassword"
           (click)="togglePasswordVisibility()">
-          <svg 
-            *ngIf="!showPassword" 
-            class="eye-closed" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
-            stroke-width="2" 
-            stroke-linecap="round" 
-            stroke-linejoin="round">
+          <svg *ngIf="!showPassword" class="eye-closed" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
-            <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path>
-            <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path>
+            <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68">
+            </path>
+            <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61">
+            </path>
             <line x1="2" y1="2" x2="22" y2="22"></line>
           </svg>
-          <svg 
-            *ngIf="showPassword" 
-            class="eye-open" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
-            stroke-width="2" 
-            stroke-linecap="round" 
-            stroke-linejoin="round">
+          <svg *ngIf="showPassword" class="eye-open" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
             <circle cx="12" cy="12" r="3"></circle>
           </svg>
         </button>
         <div class="input-glow"></div>
       </div>
-      <div class="error-message" [class.show]="hasFieldError('password')">
-        {{ getFieldError('password') }}
-      </div>
     </div>
 
-    <button 
-      type="submit" 
-      class="submit-btn"
-      [disabled]="isLoading">
-      {{ submitButtonText }}
+    <button type="submit" class="submit-btn">
+      Create Account
     </button>
   </form>
 </div>
+
+
 </body>
 </html>

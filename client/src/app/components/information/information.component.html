@@ -8,11 +8,6 @@
 <body>
 
 <div class="dashboard-container">
-  <!-- Header -->
-  <!-- <header class="dashboard-header">
-    <h1 class="dashboard-title">Trading Dashboard</h1>
-    <p class="dashboard-subtitle">Manage your strategies and track market indices</p>
-  </header> -->
 
   <div class="dashboard-grid">
     
@@ -83,11 +78,6 @@
             <h3 class="strategy-name">{{ strategy.name }}</h3>
             <div class="strategy-actions">
               <button 
-                class="toggle-btn"
-                (click)="toggleStrategyStatus(strategy.id)">
-               
-              </button>
-              <button 
                 class="delete-btn"
                 (click)="deleteStrategy(strategy.id)"
                 title="Delete Strategy">
@@ -102,7 +92,6 @@
             <span class="strategy-date">
               Created: {{ strategy.createdAt | date:'MMM dd, yyyy' }}
             </span>
-            
           </div>
         </div>
 
@@ -134,21 +123,6 @@
           </button>
         </div>
       </div>
-
-      <!-- Popular Indices Chips -->
-      <!-- <div class="popular-section">
-        <h3 class="popular-title">Popular Indices</h3>
-        <div class="chips-container">
-          <<button 
-  *ngFor="let indexName of popularIndices"
-  class="chip"
-  [class.selected]="isIndexSelected(indexName)"
-  (click)="addPopularIndex(indexName)">
-  {{ indexName }}
-  <span class="chip-icon">+</span>
-</button>
-        </div>
-      </div> -->
 
       <!-- Selected Indices -->
       <div class="selected-section" *ngIf="getSelectedIndices().length > 0">
@@ -195,6 +169,7 @@
     </section>
   </div>
 </div>
+
 
 </body>
 </html>

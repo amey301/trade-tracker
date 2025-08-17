@@ -1,216 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TradeTracker</title>
 </head>
 <body>
-    <div class="container">
-  <!-- <div class="header">
-    <div class="logo">TradeTracker</div>
-    <div class="subtitle">Professional Trading Dashboard</div>
-  </div> -->
+  <div class="container">
+    <div class="dashboard-grid">
+      <!-- Add New Trade Form -->
+      <div class="form-section">
+        <h2 class="section-title">Add New Trade</h2>
 
-  <div class="dashboard-grid">
-    <!-- Add New Trade Form -->
-    <div class="form-section" [class.loading]="isLoading" [class.success]="isSuccess">
-      <h2 class="section-title">Add New Trade</h2>
-      
-      <form [formGroup]="tradeForm" (ngSubmit)="onSubmit()">
-        <div class="form-row">
-          <div class="form-group">
-            <label for="tradeDate">Date</label>
-            <div class="input-wrapper">
-              <input 
-                type="date" 
-                id="tradeDate" 
-                formControlName="tradeDate"
-                [class.input-error]="hasFieldError('tradeDate')"
-                required>
+        <form>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="tradeDate">Date</label>
+              <div class="input-wrapper">
+                <input type="date" id="tradeDate" required />
+              </div>
+              <div class="error-message"></div>
             </div>
-            <div class="error-message" [class.show]="hasFieldError('tradeDate')">
-              {{ getFieldError('tradeDate') }}
+
+            <div class="form-group">
+              <label for="indexName">Index/Symbol</label>
+              <div class="input-wrapper">
+                <select id="indexName" required>
+                  <option value="">Select Index</option>
+                  <!-- options to be added dynamically -->
+                </select>
+              </div>
+              <div class="error-message"></div>
             </div>
           </div>
-          
-          <div class="form-group">
-            <label for="indexName">Index/Symbol</label>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="entryTime">Entry Time</label>
+              <div class="input-wrapper">
+                <input type="time" id="entryTime" required />
+              </div>
+              <div class="error-message"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="exitTime">Exit Time</label>
+              <div class="input-wrapper">
+                <input type="time" id="exitTime" required />
+              </div>
+              <div class="error-message"></div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="entryPrice">Entry Price (₹)</label>
+              <div class="input-wrapper">
+                <input
+                  type="number"
+                  id="entryPrice"
+                  step="0.01"
+                  placeholder="0.00"
+                  required
+                />
+              </div>
+              <div class="error-message"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="exitPrice">Exit Price (₹)</label>
+              <div class="input-wrapper">
+                <input
+                  type="number"
+                  id="exitPrice"
+                  step="0.01"
+                  placeholder="0.00"
+                  required
+                />
+              </div>
+              <div class="error-message"></div>
+              <div class="pl-preview"></div>
+            </div>
+          </div>
+
+          <div class="form-group full-width">
+            <label for="strategy">Strategy</label>
             <div class="input-wrapper">
-              <select 
-                id="indexName" 
-                formControlName="indexName"
-                [class.input-error]="hasFieldError('indexName')"
-                required>
-                <option value="">Select Index</option>
-                <option *ngFor="let option of indexOptions" [value]="option.value">
-                  {{ option.label }}
-                </option>
+              <select id="strategy" required>
+                <option value="">Select Strategy</option>
+                <!-- strategy options to be added dynamically -->
               </select>
             </div>
-            <div class="error-message" [class.show]="hasFieldError('indexName')">
-              {{ getFieldError('indexName') }}
-            </div>
+            <div class="error-message"></div>
           </div>
-        </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label for="entryTime">Entry Time</label>
-            <div class="input-wrapper">
-              <input 
-                type="time" 
-                id="entryTime" 
-                formControlName="entryTime"
-                [class.input-error]="hasFieldError('entryTime')"
-                required>
-            </div>
-            <div class="error-message" [class.show]="hasFieldError('entryTime')">
-              {{ getFieldError('entryTime') }}
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <label for="exitTime">Exit Time</label>
-            <div class="input-wrapper">
-              <input 
-                type="time" 
-                id="exitTime" 
-                formControlName="exitTime"
-                [class.input-error]="hasFieldError('exitTime')"
-                required>
-            </div>
-            <div class="error-message" [class.show]="hasFieldError('exitTime')">
-              {{ getFieldError('exitTime') }}
-            </div>
-          </div>
-        </div>
+          <button type="submit" class="add-trade-btn">Add Trade</button>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label for="entryPrice">Entry Price (₹)</label>
-            <div class="input-wrapper">
-              <input 
-                type="number" 
-                id="entryPrice" 
-                formControlName="entryPrice"
-                [class.input-error]="hasFieldError('entryPrice')"
-                step="0.01" 
-                placeholder="0.00" 
-                required>
-            </div>
-            <div class="error-message" [class.show]="hasFieldError('entryPrice')">
-              {{ getFieldError('entryPrice') }}
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <label for="exitPrice">Exit Price (₹)</label>
-            <div class="input-wrapper">
-              <input 
-                type="number" 
-                id="exitPrice" 
-                formControlName="exitPrice"
-                [class.input-error]="hasFieldError('exitPrice')"
-                step="0.01" 
-                placeholder="0.00" 
-                required>
-            </div>
-            <div class="error-message" [class.show]="hasFieldError('exitPrice')">
-              {{ getFieldError('exitPrice') }}
-            </div>
-            <div *ngIf="getPLPreview()" class="pl-preview">
-              Preview P&L: {{ getPLPreview() }}
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group full-width">
-          <label for="strategy">Strategy</label>
-          <div class="input-wrapper">
-            <select 
-              id="strategy" 
-              formControlName="strategy"
-              [class.input-error]="hasFieldError('strategy')"
-              required>
-              <option value="">Select Strategy</option>
-              <option *ngFor="let strategy of strategyOptions" [value]="strategy">
-                {{ strategy }}
-              </option>
-            </select>
-          </div>
-          <div class="error-message" [class.show]="hasFieldError('strategy')">
-            {{ getFieldError('strategy') }}
-          </div>
-        </div>
-
-        <button 
-          type="submit" 
-          class="add-trade-btn"
-          [disabled]="isLoading">
-          <span *ngIf="!isLoading && !isSuccess">Add Trade</span>
-          <span *ngIf="isLoading">Adding Trade...</span>
-          <span *ngIf="isSuccess">Trade Added!</span>
-        </button>
-        
-        <div class="current-time">Current Time: {{ currentTime }}</div>
-      </form>
-    </div>
-
-    <!-- Trading Statistics -->
-    <div class="table-section">
-      <div class="table-header">
-        <h2 class="section-title">Trading History</h2>
-        <div class="trade-stats">
-          <div class="stat">
-            <div class="stat-value">{{ totalTrades }}</div>
-            <div class="stat-label">Total Trades</div>
-          </div>
-          <div class="stat">
-            <div class="stat-value" [ngClass]="totalPLClass">{{ formatCurrency(totalPL) }}</div>
-            <div class="stat-label">Total P&L</div>
-          </div>
-          <div class="stat">
-            <div class="stat-value">{{ winRate }}</div>
-            <div class="stat-label">Win Rate</div>
-          </div>
-        </div>
+          <div class="current-time">Current Time: <!-- dynamic --></div>
+        </form>
       </div>
 
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Date</th>
-              <th>Symbol</th>
-              <th>Entry Time</th>
-              <th>Exit Time</th>
-              <th>Entry Price</th>
-              <th>Exit Price</th>
-              <th>P&L</th>
-              <th>Strategy</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let trade of trades">
-              <td><span class="trade-id">{{ trade.id }}</span></td>
-              <td>{{ formatDate(trade.date) }}</td>
-              <td><strong>{{ trade.symbol }}</strong></td>
-              <td>{{ trade.entryTime }}</td>
-              <td>{{ trade.exitTime }}</td>
-              <td>₹{{ trade.entryPrice.toFixed(2) }}</td>
-              <td>₹{{ trade.exitPrice.toFixed(2) }}</td>
-              <td [ngClass]="getPLClass(calculatePL(trade.entryPrice, trade.exitPrice))">
-                ₹{{ calculatePL(trade.entryPrice, trade.exitPrice).toFixed(2) }}
-              </td>
-              <td><span class="strategy-tag">{{ trade.strategy }}</span></td>
-            </tr>
-          </tbody>
-        </table>
+      <!-- Trading Statistics -->
+      <div class="table-section">
+        <div class="table-header">
+          <h2 class="section-title">Trading History</h2>
+          <div class="trade-stats">
+            <div class="stat">
+              <div class="stat-value"><!-- totalTrades --></div>
+              <div class="stat-label">Total Trades</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value"><!-- totalPL --></div>
+              <div class="stat-label">Total P&L</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value"><!-- winRate --></div>
+              <div class="stat-label">Win Rate</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Symbol</th>
+                <th>Entry Time</th>
+                <th>Exit Time</th>
+                <th>Entry Price</th>
+                <th>Exit Price</th>
+                <th>P&L</th>
+                <th>Strategy</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- trade rows to be added dynamically -->
+               
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </body>
 </html>

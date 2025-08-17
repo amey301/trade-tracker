@@ -1,10 +1,14 @@
 const mongoose = require('mongoose');
 
 const tradeSchema = new mongoose.Schema({
-    userId: {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
+    },
+    strategy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Strategy'
     },
     date: {
         type: Date,
@@ -12,21 +16,6 @@ const tradeSchema = new mongoose.Schema({
     },
     symbol: {
         type: String,
-        required: true,
-        trim: true
-    },
-    assetType: {
-        type: String,
-        enum: ['crypto', 'stock', 'index'],
-        required: true
-    },
-    tradeType: {
-        type: String,
-        enum: ['buy', 'sell'],
-        required: true
-    },
-    quantity: {
-        type: Number,
         required: true
     },
     entryPrice: {
@@ -37,13 +26,10 @@ const tradeSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    fees: {
-        type: Number,
-        default: 0
-    },
     pnl: {
-        type: Number
+        type: Number,
+        required: true
     }
 }, { timestamps: true });
 
-module.exports = mongoose.model("Trade", tradeSchema);
+module.exports = mongoose.model('Trade', tradeSchema);

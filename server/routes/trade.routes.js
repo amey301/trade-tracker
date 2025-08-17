@@ -1,121 +1,71 @@
-const tradeModel = require('../models/trade.model');
 const express = require('express');
-const userModel = require('../models/user.model');
-const checkCookie = require('../middlewares/auth.middleware');
+const Trade = require('../models/trade.model');
+const User = require('../models/user.model');
 const router = express.Router();
-const jwt = require('jsonwebtoken');
 
-const { default: mongoose } = require('mongoose');
-const JWT_SECRET = process.env.JWT_SECRET
-
-router.post('/user/form', checkCookie, async (req, res) => {
+// Create a new trade and append to the user's trades array
+router.post('/create', async (req, res) => {
     try {
-        const { date, assetType, entryPrice, exitPrice, fees, quantity, symbol, tradeType } = req.body;
+        const { userId, strategy, date, symbol, entryPrice, exitPrice, pnl } = req.body;
 
-        if (!date || !assetType || !entryPrice || !exitPrice || !fees || !quantity || !symbol || !tradeType) {
-            return res.status(400).json({
-                success: false,
-                message: 'All Fields are required'
-            });
-        }
-
-        userId = req.user._id
-        console.log(`this is id`, req.user._id)
-
-        const newTrade = new tradeModel({
-            userId, ...req.body
+        // 1️⃣ Create the trade
+        const newTrade = await Trade.create({
+            user: userId,
+            strategy,
+            date,
+            symbol,
+            entryPrice,
+            exitPrice,
+            pnl
         });
 
-        const createdTrade = await newTrade.save();
-
-        const userFound = await userModel.findById(userId);
-        if (!userFound) {
-            return res.status(404).json({
-                success: false,
-                message: 'User not found'
-            });
-        }
-
-        userFound.trades.push(createdTrade._id);
-        await userFound.save();
+        // 2️⃣ Append trade ID to user's trades array
+        await User.findByIdAndUpdate(
+            userId,
+            { $push: { trades: newTrade._id } },
+            { new: true }
+        );
 
         res.status(201).json({
-            success: true,
-            data: createdTrade,
-            message: 'Trade created successfully'
+            message: 'Trade created and linked to user',
+            trade: newTrade
         });
-    } catch (err) {
-        res.status(500).json({
-            success: false,
-            error: err.message || err
-        });
+    } catch (error) {
+        console.error('Error creating trade:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 
-router.get('/user/trades', checkCookie, async (req, res) => {
+// Get all trades for a user
+router.get('/:userId', async (req, res) => {
     try {
-        const userId = req.user._id; // From checkCookie middleware
-        console.log('User ID from token:', userId);
-
-        // Find all trades for this user
-        const trades = await tradeModel.find({ userId }).populate('userId');
-
-        res.status(200).json({
-            success: true,
-            data: trades, // could be empty array
-            message: trades.length ? 'Trades fetched successfully' : 'No trades found'
-        });
-
-    } catch (err) {
-        console.error('Error fetching trades:', err);
-        res.status(500).json({
-            success: false,
-            message: 'Failed to fetch trades',
-            error: err.message
-        });
+        const trades = await Trade.find({ user: req.params.userId }).populate('strategy');
+        res.json(trades);
+    } catch (error) {
+        console.error('Error fetching trades:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 
-router.delete('/user/trade/delete/:id', checkCookie, async (req, res) => {
-  try {
-    const tradeId = req.params.id
-    console.log(tradeId)
-    const userId = req.user._id;
-    console.log(userId)
 
-    if (!tradeId) {
-      return res.status(400).json({
-        success: false,
-        message: 'Invalid Trade'
-      });
+// Delete a trade and remove from user's trades array
+router.delete('/delete/:tradeId', async (req, res) => {
+    try {
+        const trade = await Trade.findById(req.params.tradeId);
+        if (!trade) return res.status(404).json({ error: 'Trade not found' });
+
+        // Remove trade from User model
+        await User.findByIdAndUpdate(
+            trade.user,
+            { $pull: { trades: trade._id } }
+        );
+
+        await trade.deleteOne();
+        res.json({ message: 'Trade deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting trade:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
-
-    // Ensure only the owner's trade can be deleted
-    const trade = await tradeModel.findOne({ _id: tradeId, userId });
-
-    if (!trade) {
-      return res.status(404).json({
-        success: false,
-        message: 'Trade not found or unauthorized'
-      });
-    }
-
-    await tradeModel.findByIdAndDelete(tradeId);
-
-    res.status(200).json({
-      success: true,
-      message: 'Trade deleted successfully'
-    });
-
-  } catch (err) {
-    console.error('Error deleting trade:', err);
-    res.status(500).json({
-      success: false,
-      message: 'Server error',
-      error: err.message
-    });
-  }
 });
-
 
 module.exports = router;

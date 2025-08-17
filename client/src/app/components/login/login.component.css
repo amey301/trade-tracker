@@ -2,8 +2,8 @@
 
 :host {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: #000000;
-  color: #ffffff;
+  background: #000;
+  color: #fff;
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -16,10 +16,7 @@
 :host::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background: radial-gradient(ellipse at 50% 0%, rgba(0, 122, 255, 0.1) 0%, transparent 70%);
   pointer-events: none;
 }
@@ -27,8 +24,8 @@
 .container {
   width: 100%;
   max-width: 420px;
-  position: relative;
   animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
 }
 
 @keyframes fadeInUp {
@@ -64,27 +61,6 @@
   font-weight: 400;
 }
 
-.form-header {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.form-title {
-  font-size: 28px;
-  font-weight: 600;
-  margin-bottom: 8px;
-  background: linear-gradient(135deg, #ffffff, #a0a0a0);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.form-subtitle {
-  font-size: 16px;
-  color: #8e8e93;
-  font-weight: 400;
-}
-
 .form-container {
   background: rgba(28, 28, 30, 0.8);
   border-radius: 20px;
@@ -99,10 +75,7 @@
 .form-container::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   border-radius: 20px;
   padding: 1px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
@@ -124,9 +97,8 @@ label {
   display: block;
   font-size: 14px;
   font-weight: 500;
-  color: #ffffff;
+  color: #fff;
   margin-bottom: 8px;
-  transition: color 0.3s ease;
 }
 
 .input-wrapper {
@@ -142,9 +114,9 @@ input {
   background: rgba(44, 44, 46, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
-  color: #ffffff;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #fff;
   outline: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   backdrop-filter: blur(10px);
   box-sizing: border-box;
 }
@@ -169,19 +141,14 @@ input:focus::placeholder {
   opacity: 0.5;
 }
 
-input:focus + .input-glow,
-input:focus ~ .input-glow,
-.input-wrapper.focused .input-glow {
+input:focus + .input-glow {
   opacity: 1;
   transform: scale(1);
 }
 
 .input-glow {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   border-radius: 12px;
   background: linear-gradient(135deg, rgba(0, 122, 255, 0.1), rgba(0, 122, 255, 0.05));
   opacity: 0;
@@ -207,7 +174,7 @@ input:focus ~ .input-glow,
 }
 
 .password-toggle:hover {
-  color: #ffffff;
+  color: #fff;
   background: rgba(255, 255, 255, 0.1);
 }
 
@@ -232,7 +199,7 @@ input:focus ~ .input-glow,
   background: linear-gradient(135deg, #007aff, #0051d5);
   border: none;
   border-radius: 12px;
-  color: #ffffff;
+  color: #fff;
   font-size: 16px;
   font-weight: 600;
   font-family: 'Inter', sans-serif;
@@ -240,11 +207,6 @@ input:focus ~ .input-glow,
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
-}
-
-.login-btn:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
 }
 
 .login-btn::before {
@@ -258,16 +220,16 @@ input:focus ~ .input-glow,
   transition: left 0.6s ease;
 }
 
-.login-btn:hover:not(:disabled) {
+.login-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 15px 35px rgba(0, 122, 255, 0.3);
 }
 
-.login-btn:hover:not(:disabled)::before {
+.login-btn:hover::before {
   left: 100%;
 }
 
-.login-btn:active:not(:disabled) {
+.login-btn:active {
   transform: translateY(-1px);
 }
 
@@ -281,8 +243,8 @@ input:focus ~ .input-glow,
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
-  transition: all 0.3s ease;
   position: relative;
+  transition: all 0.3s ease;
 }
 
 .forgot-password a::after {
@@ -345,51 +307,6 @@ input:focus ~ .input-glow,
   color: #0051d5;
 }
 
-/* Form validation styles */
-.input-error {
-  border-color: #ff3b30 !important;
-  box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.1) !important;
-}
-
-.error-message {
-  color: #ff3b30;
-  font-size: 12px;
-  margin-top: 4px;
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: all 0.3s ease;
-}
-
-.error-message.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Loading state */
-.loading {
-  opacity: 0.7;
-  pointer-events: none;
-}
-
-.loading .login-btn {
-  background: #666;
-}
-
-/* Success animation */
-@keyframes successPulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.02); }
-  100% { transform: scale(1); }
-}
-
-.success {
-  animation: successPulse 0.6s ease-out;
-}
-
-.success .login-btn {
-  background: linear-gradient(135deg, #34c759, #30d158) !important;
-}
-
 /* Responsive Design */
 @media (max-width: 480px) {
   .container {
@@ -403,10 +320,6 @@ input:focus ~ .input-glow,
 
   .logo {
     font-size: 32px;
-  }
-
-  .form-title {
-    font-size: 24px;
   }
 }
 

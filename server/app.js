@@ -5,6 +5,7 @@ const tradeRoutes = require('./routes/trade.routes')
 const userRoutes = require('./routes/user.routes')
 const cookieParser = require('cookie-parser')
 
+const strategyRoutes = require('./routes/strategy.routes') // import strategy routes
 
 const app = express()
 
@@ -20,9 +21,11 @@ app.use(cookieParser());
 connectDB()
 
  
-app.use('/v1', tradeRoutes)
+app.use('/v1/trade', tradeRoutes)
 
-app.use('/v1', userRoutes)
+app.use('/v1/user', userRoutes)
+
+app.use('/v1/strategy', strategyRoutes);
 
 app.get('/', (req, res) => {
   res.status(200).json({
